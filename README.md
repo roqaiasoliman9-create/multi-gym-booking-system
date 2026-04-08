@@ -127,26 +127,48 @@ This system solves that by acting as a messaging-first booking engine, where use
 
 
 # 📁 Project Structure
-
+> The project follows a modular architecture separating core logic, integrations, workers, and dashboard components for scalability and maintainability.
 ```
-├── app.py
-├── telegram_bot.py
-├── whatsapp_webhook.py
-├── whatsapp_utils.py
-├── booking_logic.py
-├── conversation.py
-├── database.py
-├── db.py
-├── gym_system.py
-├── reminder_worker.py
-├── workers_reminders.py
-├── worker_attendance.py
-├── worker_attendance_loop.py
-├── admin_dashboard.py
+## 📁 Project Structure
+
+```bash
+.
+├── app/
+│   ├── core/
+│   │   ├── booking_logic.py
+│   │   ├── conversation.py
+│   │   └── gym_system.py
+│   │
+│   ├── bots/
+│   │   ├── telegram_bot.py
+│   │   ├── whatsapp_webhook.py
+│   │   └── whatsapp_utils.py
+│   │
+│   ├── workers/
+│   │   ├── reminder_worker.py
+│   │   ├── workers_reminders.py
+│   │   ├── worker_attendance.py
+│   │   └── worker_attendance_loop.py
+│   │
+│   └── dashboard/
+│       └── admin_dashboard.py
+│
+├── database/
+│   ├── database.py
+│   ├── db.py
+│   ├── gym.db
+│   └── gym.sqlite3
+│
 ├── assets/
-├── gym.db
+│   └── screenshots/
+│
+├── config/
+│   └── .env
+│
+├── app.py
 ├── requirements.txt
-├── .env.example
+├── README.md
+└── .env.example
 
 ```
 
