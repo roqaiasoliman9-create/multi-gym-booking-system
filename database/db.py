@@ -3,12 +3,19 @@ from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 from typing import Optional
 
-
 # =========================================
 # Time helpers
 # =========================================
 
 TZ = "Africa/Cairo"
+
+
+def now_cairo_dt() -> datetime:
+    return datetime.now(ZoneInfo(TZ))
+
+
+def now_cairo() -> str:
+    return now_cairo_dt().isoformat(timespec="seconds")
 
 
 def get_upcoming_bookings(conn, gym_id: int, minutes_before: int = 60):
@@ -33,7 +40,6 @@ def get_upcoming_bookings(conn, gym_id: int, minutes_before: int = 60):
     result = []
 
     for r in rows:
-
         try:
             session_dt = datetime.strptime(f"{r['day']} {r['time']}", "%A %I:%M %p")
             session_dt = session_dt.replace(
@@ -42,7 +48,7 @@ def get_upcoming_bookings(conn, gym_id: int, minutes_before: int = 60):
                 day=now.day,
                 tzinfo=ZoneInfo(TZ)
             )
-        except:
+        except Exception:
             continue
 
         diff = (session_dt - now).total_seconds() / 60
@@ -51,14 +57,6 @@ def get_upcoming_bookings(conn, gym_id: int, minutes_before: int = 60):
             result.append(dict(r))
 
     return result
-
-
-def now_cairo_dt() -> datetime:
-    return datetime.now(ZoneInfo(TZ))
-
-
-def now_cairo() -> str:
-    return now_cairo_dt().isoformat(timespec="seconds")
 
 
 # =========================================
@@ -188,6 +186,20 @@ def init_db(conn: sqlite3.Connection) -> None:
         reminder_hours_2 INTEGER NOT NULL DEFAULT 1,
         FOREIGN KEY (gym_id) REFERENCES gyms(id)
     );
+
+    CREATE TABLE IF NOT EXISTS admin_contact_requests (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        gym_id INTEGER NOT NULL,
+        source TEXT NOT NULL,
+        platform_user TEXT,
+        full_name TEXT NOT NULL,
+        phone TEXT NOT NULL,
+        membership_code TEXT,
+        language TEXT NOT NULL DEFAULT 'ar',
+        status TEXT NOT NULL DEFAULT 'new',
+        created_at TEXT NOT NULL,
+        FOREIGN KEY (gym_id) REFERENCES gyms(id)
+    );
     """)
     conn.commit()
 
@@ -206,8 +218,13 @@ def migrate_v2(conn: sqlite3.Connection) -> None:
     conn.commit()
 
 
+def migrate_v3(conn: sqlite3.Connection) -> None:
+    conn.execute("ALTER TABLE admin_contact_requests ADD COLUMN membership_code TEXT;")
+    conn.commit()
+
+
 def safe_migrate(conn: sqlite3.Connection) -> None:
-    for fn in (migrate_v1, migrate_v2):
+    for fn in (migrate_v1, migrate_v2, migrate_v3):
         try:
             fn(conn)
         except sqlite3.OperationalError:
@@ -500,3 +517,66 @@ def waitlist_accept(conn: sqlite3.Connection, gym_id: int, member_id: int) -> Op
         FROM sessions
         WHERE id=?
     """, (booking_id, row["session_id"])).fetchone()
+
+
+# =========================================
+# Admin contact requests
+# =========================================
+
+def create_admin_contact_request(
+    conn: sqlite3.Connection,
+    gym_id: int,
+    source: str,
+    full_name: str,
+    phone: str,
+    language: str,
+    platform_user: str | None,
+    membership_code: str | None,
+) -> int:
+    conn.execute("""
+        INSERT INTO admin_contact_requests
+        (gym_id, source, platform_user, full_name, phone, membership_code, language, status, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, 'new', ?)
+    """, (
+        gym_id,
+        source,
+        platform_user,
+        full_name,
+        phone,
+        membership_code,
+        language,
+        now_cairo(),
+    ))
+    conn.commit()
+    return int(conn.execute("SELECT last_insert_rowid()").fetchone()[0])
+
+
+def list_admin_contact_requests(conn: sqlite3.Connection, gym_id: int) -> list[sqlite3.Row]:
+    return conn.execute("""
+        SELECT
+            id,
+            source,
+            platform_user,
+            full_name,
+            phone,
+            membership_code,
+            language,
+            status,
+            created_at
+        FROM admin_contact_requests
+        WHERE gym_id=?
+        ORDER BY created_at DESC, id DESC
+    """, (gym_id,)).fetchall()
+
+
+def update_admin_contact_request_status(
+    conn: sqlite3.Connection,
+    request_id: int,
+    status: str
+) -> None:
+    conn.execute("""
+        UPDATE admin_contact_requests
+        SET status=?
+        WHERE id=?
+    """, (status, request_id))
+    conn.commit()

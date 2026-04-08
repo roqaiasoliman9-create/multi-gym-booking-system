@@ -7,7 +7,6 @@ from typing import Any, Dict, Optional, TypedDict
 from zoneinfo import ZoneInfo
 
 from dotenv import load_dotenv
-from groq import Groq
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import END, StateGraph
 
@@ -27,6 +26,8 @@ from db import (
     waitlist_add,
     waitlist_offer_next,
 )
+load_dotenv()
+
 
 # =========================================
 # Config
@@ -453,26 +454,9 @@ api_key = os.getenv("GROQ_API_KEY")
 if not api_key:
     raise RuntimeError("Missing GROQ_API_KEY in .env")
 
-client = Groq(api_key=api_key)
+import requests
 
-
-def extract_data_with_groq(user_message: str) -> Dict[str, Any]:
-    prompt = f"""
-Extract the following from the message:
-1) day (must be in English: Saturday, Sunday, Monday, Tuesday, Wednesday, Thursday, Friday) OR "Not Found"
-2) gym_class (the class name) OR "Not Found"
-3) member_code (ID number as string or number) OR "Not Found"
-
-Message: "{user_message}"
-
-Return ONLY a JSON object with keys: day, gym_class, member_code.
-"""
-    chat_completion = client.chat.completions.create(
-        messages=[{"role": "user", "content": prompt}],
-        model="llama-3.1-8b-instant",
-        response_format={"type": "json_object"},
-    )
-    return json.loads(chat_completion.choices[0].message.content)
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 
 # =========================================
@@ -854,7 +838,18 @@ class AgentState(TypedDict):
 
 def extraction_node(state: AgentState) -> Dict[str, Any]:
     user_msg = state["user_message"]
-    info = extract_data_with_groq(user_msg) or {}
+
+    explicit_day = detect_any_day_from_text(user_msg)
+    explicit_class = detect_class_from_text(user_msg)
+    explicit_code = find_member_code_in_text(user_msg)
+
+    return {
+        "extracted_info": {
+            "day": explicit_day or today_english_day(DEFAULT_TZ),
+            "gym_class": explicit_class,
+            "member_code": explicit_code,
+        }
+    }
 
     explicit_day = detect_any_day_from_text(user_msg)
     explicit_class = detect_class_from_text(user_msg)
