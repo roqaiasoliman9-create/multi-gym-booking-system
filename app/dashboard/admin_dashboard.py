@@ -1,14 +1,18 @@
+import sys
+import os
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
+
 import sqlite3
 from datetime import datetime
 from io import BytesIO
 from pathlib import Path
 from zoneinfo import ZoneInfo
-
+from app.db import init_db
 import pandas as pd
 import streamlit as st
 import matplotlib.pyplot as plt
 
-from db import init_db
 
 DB_PATH = "gym.sqlite3"
 TZ = "Africa/Cairo"
