@@ -12,6 +12,7 @@ from database.db import init_db
 import pandas as pd
 import streamlit as st
 import matplotlib.pyplot as plt
+from database.db import init_db, get_or_create_gym
 
 
 DB_PATH = "gym.sqlite3"
@@ -1478,13 +1479,10 @@ def quick_actions_panel(conn, gym_id):
 st.set_page_config(page_title="Gym Admin Dashboard", layout="wide")
 inject_css()
 
-conn = connect()
+conn = connect("database/gym.sqlite3")
 init_db(conn)
+get_or_create_gym(conn, "Default Gym")
 gym_id = get_gym_id(conn)
-
-if not gym_id:
-    st.error("No gym found in database.")
-    st.stop()
 
 with st.sidebar:
     st.markdown("## Gym Dashboard")
