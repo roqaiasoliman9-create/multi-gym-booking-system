@@ -62,10 +62,14 @@ def get_upcoming_bookings(conn, gym_id: int, minutes_before: int = 60):
 # =========================================
 # Connection
 # =========================================
+from pathlib import Path
 import sqlite3
 
-def connect(db_path="database/gym.sqlite3"):
-    return sqlite3.connect(db_path, check_same_thread=False)
+BASE_DIR = Path(__file__).resolve().parent.parent
+DB_PATH = BASE_DIR / "database" / "gym.sqlite3"
+
+def connect():
+    return sqlite3.connect(str(DB_PATH), check_same_thread=False)
 
 def connect(db_path: str = "gym.sqlite3") -> sqlite3.Connection:
     conn = sqlite3.connect(db_path)
