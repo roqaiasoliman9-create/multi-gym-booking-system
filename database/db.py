@@ -62,6 +62,10 @@ def get_upcoming_bookings(conn, gym_id: int, minutes_before: int = 60):
 # =========================================
 # Connection
 # =========================================
+import sqlite3
+
+def connect(db_path="database/gym.sqlite3"):
+    return sqlite3.connect(db_path, check_same_thread=False)
 
 def connect(db_path: str = "gym.sqlite3") -> sqlite3.Connection:
     conn = sqlite3.connect(db_path)
