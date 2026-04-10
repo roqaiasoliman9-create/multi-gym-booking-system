@@ -1479,10 +1479,12 @@ def quick_actions_panel(conn, gym_id):
 st.set_page_config(page_title="Gym Admin Dashboard", layout="wide")
 inject_css()
 
-conn = connect("database/gym.sqlite3")
-init_db(conn)
-get_or_create_gym(conn, "Default Gym")
-gym_id = get_gym_id(conn)
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+DB_PATH = BASE_DIR / "database" / "gym.sqlite3"
+
+conn = connect(str(DB_PATH))
 
 with st.sidebar:
     st.markdown("## Gym Dashboard")
