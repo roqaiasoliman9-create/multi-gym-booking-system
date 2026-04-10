@@ -8,7 +8,7 @@ from datetime import datetime
 from io import BytesIO
 from pathlib import Path
 from zoneinfo import ZoneInfo
-from app.db import init_db
+from app.database.db import init_db
 import pandas as pd
 import streamlit as st
 import matplotlib.pyplot as plt
