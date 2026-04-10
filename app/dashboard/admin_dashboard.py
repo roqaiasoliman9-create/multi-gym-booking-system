@@ -12,7 +12,7 @@ from database.db import init_db
 import pandas as pd
 import streamlit as st
 import matplotlib.pyplot as plt
-from database.db import init_db, connect, get_gym_id, get_or_create_gym
+from database.db import init_db,  get_or_create_gym
 
 DB_PATH = "gym.sqlite3"
 TZ = "Africa/Cairo"
