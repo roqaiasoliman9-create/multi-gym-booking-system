@@ -52,34 +52,47 @@ A professional real-time dashboard built with Streamlit featuring:
 
 ### 🖥️ Dashboard Screenshots
 
-#### Overview & KPIs
-![Dashboard Overview](assets/screenshots/Dashboard_overview1.png)
-![Dashboard Overview 2](assets/screenshots/Dashboard_overview2.png)
+#### Overview
+![Dashboard Overview](assets/screenshots/Dashboard_Overview.jpeg)
+
+#### Alerts
+![Alerts](assets/screenshots/Alerts.jpeg)
+
+#### Recent Activity
+![Activity Feed](assets/screenshots/Activity_Feed.jpeg)
 
 #### Classes & Members
-![Classes and Members](assets/screenshots/Dashboard_Classes_Members.png)
-![Gym Classes](assets/screenshots/Dashboard_Gym_Classes.png)
+![Classes and Members](assets/screenshots/Classes_Members.jpeg)
+
+#### Booked Members
+![Booked Members](assets/screenshots/Booked_Members.png)
+
+#### Analytics — Source & Day
+![Analytics Source and Day](assets/screenshots/Analytics%20-%20Source%20%26%20Day.jpeg)
+
+#### Analytics — Top Classes & Peak Times
+![Analytics Top Classes](assets/screenshots/Analytics%20-%20Top%20Classes%20%26%20Peak%20Times.jpeg)
 
 #### Bookings Management
-![Bookings](assets/screenshots/Dashboard_Gym_bookings.png)
+![Bookings](assets/screenshots/Bookings_Management.jpeg)
 
-#### Coaches
-![Coaches](assets/screenshots/Dashboard_Gym_Coaches.png)
-
-#### Select Day
-![Select Day](assets/screenshots/Dashboard_Gym_select_day.png)
+#### Attendance
+![Attendance](assets/screenshots/Attendance.png)
 
 #### Waitlist
-![Waitlist](assets/screenshots/Dashboard_Waitinglist.png)
-
-#### Member Search
-![Searching Members](assets/screenshots/Searching_Members.png)
+![Waitlist](assets/screenshots/Waitlist.png)
 
 #### Admin Requests
-![Admin Requests](assets/screenshots/Admin_request1.png)
-![Admin Requests Contact](assets/screenshots/Admin_Requests_Contact.png)
-![Admin Requests Quick Action](assets/screenshots/Admin_Requests_Quick_Action.png)
-![Gym Admin Requests](assets/screenshots/Dashboard_Gym_Admin_Requests.png)
+![Admin Requests](assets/screenshots/Admin_Requests.jpeg)
+![Admin Requests Status](assets/screenshots/Admin_Requests_Status.jpeg)
+
+#### Filters
+![Coaches Filter](assets/screenshots/Coaches_bar.png)
+![Days Filter](assets/screenshots/Days_bar.png)
+![Classes Filter](assets/screenshots/Classes_bar.png)
+![Source Filter](assets/screenshots/Booking_Source_bar.png)
+![Request Status Filter](assets/screenshots/Request_status_bar.png)
+![Date Time](assets/screenshots/Date_Time.png)
 
 ---
 
