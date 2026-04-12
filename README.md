@@ -68,10 +68,10 @@ A professional real-time dashboard built with Streamlit featuring:
 ![Booked Members](assets/screenshots/Booked_Members.png)
 
 #### Analytics — Source & Day
-![Analytics Source and Day](assets/screenshots/Analytics%20-%20Source%20%26%20Day.jpeg)
+![Analytics Source and Day](assets/screenshots/Analytics%20%E2%80%93%20Source%20%26%20Day.jpeg)
 
 #### Analytics — Top Classes & Peak Times
-![Analytics Top Classes](assets/screenshots/Analytics%20-%20Top%20Classes%20%26%20Peak%20Times.jpeg)
+![Analytics Top Classes](assets/screenshots/Analytics%20%E2%80%93%20Top%20Classes%20%26%20Peak%20Times.jpeg)
 
 #### Bookings Management
 ![Bookings](assets/screenshots/Bookings_Management.jpeg)
